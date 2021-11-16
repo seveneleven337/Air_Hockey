@@ -1,30 +1,23 @@
 package game2;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
-import java.awt.event.*;
-
-
-
-//============================ cambiar todo denuevo aca y algunas del playground =============
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 
 
 public class Striker extends Rectangle implements Global{
 	
 	int id;
 	int speedY;
-	Image image;
+	Rectangle inv1;
+	Rectangle inv2;
 	
 	Striker(int x,int id){
 		super(x,(SCREEN_HEIGHT/2)-(STRIKER_HEIGHT/2),STRIKER_WIDTH,STRIKER_HEIGHT);
 		this.id = id;
-		if(id == 1) {
-			image = new ImageIcon("PNG\\St1.png").getImage().getScaledInstance(STRIKER_WIDTH+10, STRIKER_HEIGHT, Image.SCALE_FAST);
-		}
-		if(id == 2) {
-			image = new ImageIcon("PNG\\St.png").getImage().getScaledInstance(STRIKER_WIDTH+10, STRIKER_HEIGHT, Image.SCALE_FAST);
-		}
+		inv1 = new Rectangle(x-2, (SCREEN_HEIGHT/2)-(STRIKER_HEIGHT/2)-INVISIBLE_HEIGHT-3,INVISIBLE_WIDTH, INVISIBLE_HEIGHT);
+		inv2 = new Rectangle(x-2, (SCREEN_HEIGHT/2)+(STRIKER_HEIGHT/2)+INVISIBLE_HEIGHT+2,INVISIBLE_WIDTH, INVISIBLE_HEIGHT);
 	}
 		
 		public void keyPressed(KeyEvent e) {
@@ -34,12 +27,10 @@ public class Striker extends Rectangle implements Global{
 				if(e.getKeyCode()==KeyEvent.VK_W) {
 					setYDirection(-STRIKER_SPEED);
 					move();
-					System.out.println("w");
 				}
 				if(e.getKeyCode()==KeyEvent.VK_S) {
 					setYDirection(STRIKER_SPEED);
 					move();
-					System.out.println("s");
 				}
 				break;
 			//player 2 keycode
@@ -47,12 +38,10 @@ public class Striker extends Rectangle implements Global{
 				if(e.getKeyCode()==KeyEvent.VK_UP) {
 					setYDirection(-STRIKER_SPEED);
 					move();
-					System.out.println("up");
 				}
 				if(e.getKeyCode()==KeyEvent.VK_DOWN) {
 					setYDirection(STRIKER_SPEED);
 					move();
-					System.out.println("down");
 				} break;
 		}
 		}
@@ -84,17 +73,25 @@ public class Striker extends Rectangle implements Global{
 		}
 		public void move() {
 			y = y + speedY;
+			inv1.y = inv1.y + speedY;
+			inv2.y = inv2.y + speedY;
 		}
 		public void draw(Graphics g) {
 			if(id==1) {
 				g.setColor(Color.green);
-			}
-				
-			else {
+				//g.drawImage(STRIKER1, x, y, null);
+				g.drawRect(x, y, width, height);
+				g.setColor(Color.white);
+				g.drawRect(inv1.x,inv1.y,inv1.width,inv1.height);
+				g.drawRect(inv2.x,inv2.y,inv2.width,inv2.height);
+			}else {
 				g.setColor(Color.red);
+				//g.drawImage(STRIKER2, x, y, null);	
+				g.drawRect(x, y, width, height);
+				g.setColor(Color.white);
+				g.drawRect(inv1.x,inv1.y,inv1.width,inv1.height);
+				g.drawRect(inv2.x,inv2.y,inv2.width,inv2.height);
 			}
-			g.drawImage(image, x, y, null);	
-			//g.fillRect(x, y, width, height);
 		}
 
 		

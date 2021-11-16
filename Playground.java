@@ -19,24 +19,40 @@ public class Playground extends JPanel implements Global, Runnable{
 		
 		//image
 		Image image;
-		Image background;
 		
-		//objects 
+		//main objects  
 		Striker striker1;
 		Striker striker2;
 		Disc disc;
 		Score score;
+		//Score score2;
+		
+		//main background
+		//top
+		Background top1;
+		Background top2;
+		//back
+		Background bot1;
+		Background bot2;
+		//left
+		Background left1;
+		Background left2;
+		//right
+		Background right1;
+		Background right2;
 		
 		//other
 		Random random;
-		
+		Integer avgFps = 60;
 		
 		Playground(){
 			//=======
+			background();
 			striker();
 			disc();
-			score = new Score();
-			background = new ImageIcon("PNG\\background.png").getImage();
+			//score();
+			score= new Score();
+			
 			
 			//======
 			this.setFocusable(true);                 //listen to key signals
@@ -48,9 +64,29 @@ public class Playground extends JPanel implements Global, Runnable{
 			mainThread.start();
 		}
 		
+		/*public void score() {	
+		 * 
+		 * 
+		 * 
+		 * 
+		}*/
+		
+		public void background() {
+			top1 = new Background((SCREEN_WIDTH/2)-LONG_BORDER,0,LONG_BORDER,BORDER,1);
+			top2 = new Background(SCREEN_WIDTH/2,0,LONG_BORDER,BORDER,2);
+			
+			bot1 = new Background((SCREEN_WIDTH/2)-LONG_BORDER,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,3);
+			bot2 = new Background(SCREEN_WIDTH/2,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,4);
+			
+			left1 = new Background(0,0,BORDER,SHORT_BORDER,5);
+			left2 = new Background(0,SCREEN_HEIGHT-SHORT_BORDER,BORDER,SHORT_BORDER,6);
+			
+			right1 = new Background(SCREEN_WIDTH-BORDER,0,BORDER,SHORT_BORDER,7);
+			right2 = new Background(SCREEN_WIDTH-BORDER,SCREEN_HEIGHT-SHORT_BORDER,BORDER,SHORT_BORDER,8);
+		}
 		public void striker() {
-			striker1 = new Striker(STRIKER_WIDTH*4,1);
-			striker2 = new Striker(SCREEN_WIDTH-5*STRIKER_WIDTH,2);
+			striker1 = new Striker(3*BORDER,1);
+			striker2 = new Striker(SCREEN_WIDTH-3*BORDER-STRIKER_WIDTH,2);
 		}
 		
 		public void disc() {
@@ -65,11 +101,23 @@ public class Playground extends JPanel implements Global, Runnable{
 		}
 		
 		public void draw(Graphics g) {
-			g.drawImage(background, 0, 0, null);
+			drawBorder(g);
 			striker1.draw(g);
 			striker2.draw(g);
 			disc.draw(g);
 			score.draw(g);
+		}
+		
+		public void drawBorder(Graphics g) {
+			g.drawImage(BACKGROUND, 0, 0, null);
+			top1.draw(g);
+			top2.draw(g);
+			bot1.draw(g);
+			bot2.draw(g);
+			left1.draw(g);
+			left2.draw(g);
+			right1.draw(g);
+			right2.draw(g);
 		}
 		
 		public void move() {
@@ -81,69 +129,68 @@ public class Playground extends JPanel implements Global, Runnable{
 		public void checkCollision() {
 			
 			//========disk top and bottom===========
-			if(disc.y<=BORDER_BACKGROUND) {
+			if(disc.intersects(top1)||disc.intersects(top2)) {
 				disc.setYDirection(-disc.Speedy);
 			}
-			if(disc.y>=SCREEN_HEIGHT-DISC_DIAMETER-BORDER_BACKGROUND) {
+			if(disc.intersects(bot1)||disc.intersects(bot2)) {
 				disc.setYDirection(-disc.Speedy);
 			}
 			
 			//========disk right and left background border==========
-			//right - bottom
-			if(disc.x <= BORDER_BACKGROUND && disc.y <= 225) {
+			if(disc.intersects(left1)||disc.intersects(left2)) {
 				disc.setXDirection(-disc.Speedx);
 			}
-			//right-left
-			if(disc.x <= BORDER_BACKGROUND && disc.y >= SCREEN_HEIGHT-DISC_DIAMETER-(BORDER_BACKGROUND+225)) {
+			if(disc.intersects(right1)||disc.intersects(right2)) {
 				disc.setXDirection(-disc.Speedx);
 			}
-			//left - bottom
-			if(disc.x >= SCREEN_WIDTH-DISC_DIAMETER-BORDER_BACKGROUND && disc.y <= 225) {
-				disc.setXDirection(-disc.Speedx);
-			}
-			//left - top
-			if(disc.x >= SCREEN_WIDTH-DISC_DIAMETER-BORDER_BACKGROUND && disc.y >= SCREEN_HEIGHT-DISC_DIAMETER-(BORDER_BACKGROUND+225)) {
-				disc.setXDirection(-disc.Speedx);
-			}
+			
 			
 			//========striker area movement===========
-			//striker1 bottom
-			if(striker1.y<=BORDER_BACKGROUND) {
-				striker1.y = BORDER_BACKGROUND;
-			}
 			//striker1 top
-			if(striker1.y>=SCREEN_HEIGHT-STRIKER_HEIGHT-BORDER_BACKGROUND) {
-				striker1.y = SCREEN_HEIGHT-STRIKER_HEIGHT-BORDER_BACKGROUND;
+			if(striker1.intersects(top1)) {
+				striker1.y = BORDER;
+				striker1.inv1.y=(int)striker1.getY()-3;
+				striker1.inv2.y=(int)striker1.getY()+STRIKER_HEIGHT+2;
 			}
-			//striker2 bottom
-			if(striker2.y<=BORDER_BACKGROUND) {
-				striker2.y = BORDER_BACKGROUND;
+			//striker1 bottom
+			if(striker1.intersects(bot1)) {
+				striker1.y = SCREEN_HEIGHT-BORDER-STRIKER_HEIGHT;
+				striker1.inv1.y=(int)striker1.getY()-3;
+				striker1.inv2.y=SCREEN_HEIGHT-BORDER+2;
 			}
 			//striker2 top
-			if(striker2.y>=SCREEN_HEIGHT-STRIKER_HEIGHT-BORDER_BACKGROUND) {
-				striker2.y = SCREEN_HEIGHT-STRIKER_HEIGHT-BORDER_BACKGROUND;
+			if(striker2.intersects(top2)) {
+				striker2.y = BORDER;
+				striker2.inv1.y=(int)striker2.getY()-3;
+				striker2.inv2.y=(int)striker2.getY()+STRIKER_HEIGHT+2;
+			}
+			//striker2 bottom
+			if(striker2.intersects(bot2)) {
+				striker2.y = SCREEN_HEIGHT-BORDER-STRIKER_HEIGHT;
+				striker2.inv1.y=(int)striker2.getY()-3;
+				striker2.inv2.y=SCREEN_HEIGHT-BORDER+2;
 			}
 			
-			//==========striker and disk===========
-			//striker1 and disk
-			if(disc.intersects(striker1)) {
+			//==========striker and disk=========== 
+			if(disc.intersects(striker1) || disc.intersects(striker2)) {
 				disc.setXDirection(-disc.Speedx);
+			}else
+			if(disc.intersects(striker1.inv1) || disc.intersects(striker1.inv2) || disc.intersects(striker2.inv1) || disc.intersects(striker2.inv2)) {
+				disc.setYDirection(-(disc.Speedy));
 			}
-			//striker1 and disk
-			if(disc.intersects(striker2)) {
-				disc.setXDirection(-disc.Speedx);
-			}
+			
+			
 			
 			//==========score=============
 			//player1 score
-			if(disc.x >=SCREEN_WIDTH-DISC_DIAMETER) {
+			if(disc.intersects(score.goalpost1)) {
 				score.player1 ++;
 				striker();
 				disc();
 				System.out.println("player 1 score" + score.player1);
 			}
 			//player2 score
-			if(disc.x <= 0) {
+			if(disc.intersects(score.goalpost2)) {
 				score.player2 ++;
 				striker();
 				disc();
@@ -156,9 +203,9 @@ public class Playground extends JPanel implements Global, Runnable{
 		public void run() {
 			
 			//frames config
-			final double fps = 60.0;								// fps que quiero
-			double targetTime = 1000000000/fps; 					// tiempo en nanoseg teorico
-			double delta = 0;										// diferencia entre tiempo teorico y real (fps)
+			final double fps = 60.0;								
+			double targetTime = 1000000000/fps; 					
+			double delta = 0;										
 			int frames = 0;
 			
 			//get time
@@ -181,13 +228,15 @@ public class Playground extends JPanel implements Global, Runnable{
 				
 				// conditional for print true fps
 				if(time>=1000000000) {                                      
-					double avgFps = frames;
+					avgFps = frames;
 					//System.out.println("Average FPS: " + avgFps);
 					frames = 0;
 					time = 0;
 				}
 			}
 		}
+		
+		
 		
 		//=========inner class who listen the keyboard signals==========
 		public class Keyboard extends KeyAdapter{
@@ -201,3 +250,10 @@ public class Playground extends JPanel implements Global, Runnable{
 			}
 		}
 }
+
+
+
+
+
+
+

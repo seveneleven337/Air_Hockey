@@ -16,6 +16,7 @@ public class Window extends JFrame implements Global{
 			this.setBackground(Color.black);
 			this.pack();
 			this.setVisible(true);
+			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			this.setLocationRelativeTo(null);
 		}
 }

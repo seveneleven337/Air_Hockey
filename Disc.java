@@ -16,7 +16,7 @@ public class Disc extends Rectangle implements Global{
 		Image image;
 		
 		Disc(){
-			super(SCREEN_WIDTH/2-DISC_DIAMETER/2,SCREEN_HEIGHT/2-DISC_DIAMETER/2,DISC_DIAMETER,DISC_DIAMETER);
+			super(SCREEN_WIDTH/2-DISC_DIAMETER/2,SCREEN_HEIGHT/2-DISC_DIAMETER/2,DISC_DIAMETER+5,DISC_DIAMETER+5);
 			random = new Random();
 			int randomXDirection = random.nextInt(2);
 			if(randomXDirection ==0) {
