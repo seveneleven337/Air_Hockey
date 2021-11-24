@@ -4,9 +4,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 
@@ -28,19 +28,8 @@ public class Playground extends JPanel implements Global, Runnable{
 		//Score score2;
 		
 		//main background
-		//top
-		Background top1;
-		Background top2;
-		//back
-		Background bot1;
-		Background bot2;
-		//left
-		Background left1;
-		Background left2;
-		//right
-		Background right1;
-		Background right2;
-		
+		ArrayList <Background> back = new ArrayList <Background>();
+
 		//other
 		Random random;
 		Integer avgFps = 60;
@@ -48,8 +37,11 @@ public class Playground extends JPanel implements Global, Runnable{
 		Playground(){
 			//=======
 			background();
+			System.out.println("1");
 			striker();
+			System.out.println("2");
 			disc();
+			System.out.println("3");
 			//score();
 			score= new Score();
 			
@@ -72,17 +64,19 @@ public class Playground extends JPanel implements Global, Runnable{
 		}*/
 		
 		public void background() {
-			top1 = new Background((SCREEN_WIDTH/2)-LONG_BORDER,0,LONG_BORDER,BORDER,1);
-			top2 = new Background(SCREEN_WIDTH/2,0,LONG_BORDER,BORDER,2);
-			
-			bot1 = new Background((SCREEN_WIDTH/2)-LONG_BORDER,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,3);
-			bot2 = new Background(SCREEN_WIDTH/2,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,4);
-			
-			left1 = new Background(0,0,BORDER,SHORT_BORDER,5);
-			left2 = new Background(0,SCREEN_HEIGHT-SHORT_BORDER,BORDER,SHORT_BORDER,6);
-			
-			right1 = new Background(SCREEN_WIDTH-BORDER,0,BORDER,SHORT_BORDER,7);
-			right2 = new Background(SCREEN_WIDTH-BORDER,SCREEN_HEIGHT-SHORT_BORDER,BORDER,SHORT_BORDER,8);
+			//top
+			back.add(new Background((SCREEN_WIDTH/2)-LONG_BORDER,0,LONG_BORDER,BORDER,1));
+			back.add(new Background(SCREEN_WIDTH/2,0,LONG_BORDER,BORDER,2));
+			//bot
+			back.add(new Background((SCREEN_WIDTH/2)-LONG_BORDER,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,3));
+			back.add(new Background(SCREEN_WIDTH/2,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,4));
+			//left
+			back.add(new Background(0,0,BORDER,SHORT_BORDER,5));
+			back.add(new Background(0,SCREEN_HEIGHT-SHORT_BORDER,BORDER,SHORT_BORDER,6));
+			//right
+			back.add(new Background(SCREEN_WIDTH-BORDER,0,BORDER,SHORT_BORDER,7));
+			back.add(new Background(SCREEN_WIDTH-BORDER,SCREEN_HEIGHT-SHORT_BORDER,BORDER,SHORT_BORDER,8));
+		
 		}
 		public void striker() {
 			striker1 = new Striker(3*BORDER,1);
@@ -110,14 +104,9 @@ public class Playground extends JPanel implements Global, Runnable{
 		
 		public void drawBorder(Graphics g) {
 			g.drawImage(BACKGROUND, 0, 0, null);
-			top1.draw(g);
-			top2.draw(g);
-			bot1.draw(g);
-			bot2.draw(g);
-			left1.draw(g);
-			left2.draw(g);
-			right1.draw(g);
-			right2.draw(g);
+			for(Background e: back) {
+				e.draw(g);
+			}
 		}
 		
 		public void move() {
@@ -129,43 +118,43 @@ public class Playground extends JPanel implements Global, Runnable{
 		public void checkCollision() {
 			
 			//========disk top and bottom===========
-			if(disc.intersects(top1)||disc.intersects(top2)) {
+			if(disc.intersects(back.get(0))||disc.intersects(back.get(1))) {
 				disc.setYDirection(-disc.Speedy);
 			}
-			if(disc.intersects(bot1)||disc.intersects(bot2)) {
+			if(disc.intersects(back.get(2))||disc.intersects(back.get(3))) {
 				disc.setYDirection(-disc.Speedy);
 			}
 			
 			//========disk right and left background border==========
-			if(disc.intersects(left1)||disc.intersects(left2)) {
+			if(disc.intersects(back.get(4))||disc.intersects(back.get(5))) {
 				disc.setXDirection(-disc.Speedx);
 			}
-			if(disc.intersects(right1)||disc.intersects(right2)) {
+			if(disc.intersects(back.get(6))||disc.intersects(back.get(7))) {
 				disc.setXDirection(-disc.Speedx);
 			}
 			
 			
 			//========striker area movement===========
 			//striker1 top
-			if(striker1.intersects(top1)) {
+			if(striker1.intersects(back.get(0))) {
 				striker1.y = BORDER;
 				striker1.inv1.y=(int)striker1.getY()-3;
 				striker1.inv2.y=(int)striker1.getY()+STRIKER_HEIGHT+2;
 			}
 			//striker1 bottom
-			if(striker1.intersects(bot1)) {
+			if(striker1.intersects(back.get(2))) {
 				striker1.y = SCREEN_HEIGHT-BORDER-STRIKER_HEIGHT;
 				striker1.inv1.y=(int)striker1.getY()-3;
 				striker1.inv2.y=SCREEN_HEIGHT-BORDER+2;
 			}
 			//striker2 top
-			if(striker2.intersects(top2)) {
+			if(striker2.intersects(back.get(1))) {
 				striker2.y = BORDER;
 				striker2.inv1.y=(int)striker2.getY()-3;
 				striker2.inv2.y=(int)striker2.getY()+STRIKER_HEIGHT+2;
 			}
 			//striker2 bottom
-			if(striker2.intersects(bot2)) {
+			if(striker2.intersects(back.get(3))) {
 				striker2.y = SCREEN_HEIGHT-BORDER-STRIKER_HEIGHT;
 				striker2.inv1.y=(int)striker2.getY()-3;
 				striker2.inv2.y=SCREEN_HEIGHT-BORDER+2;
@@ -173,24 +162,24 @@ public class Playground extends JPanel implements Global, Runnable{
 			
 			//==========striker and disk=========== 
 			if(disc.intersects(striker1) || disc.intersects(striker2)) {
-				if(disc.Speedx<0) {
+				disc.setXDirection(-disc.Speedx);
+				/*if(disc.Speedx<0) {
 					disc.setXDirection(Math.abs(disc.Speedx)+1);
 					disc.setYDirection(Math.abs(disc.Speedy)+1);
 				} else {
 					disc.setXDirection(-1*(Math.abs(disc.Speedx)+1));
 					disc.setYDirection(-1*(Math.abs(disc.Speedy)+1));
-				}
+				}*/
 			}
 			if(disc.intersects(striker1.inv1) || disc.intersects(striker1.inv2) || disc.intersects(striker2.inv1) || disc.intersects(striker2.inv2)) {
-				//disc.setYDirection(Math.abs(disc.Speedy++));
-				//disc.Speedy++;
-				if(disc.Speedy<0) {
+				disc.setYDirection(-(disc.Speedy));
+				/*if(disc.Speedy<0) {
 					disc.setXDirection(Math.abs(disc.Speedx)+DELTA_SPEED);
 					disc.setYDirection(Math.abs(disc.Speedy)+DELTA_SPEED);
 				} else {
 					disc.setXDirection(-1*(Math.abs(disc.Speedx)+DELTA_SPEED));
 					disc.setYDirection(-1*(Math.abs(disc.Speedy)+DELTA_SPEED));
-				}
+				}*/
 			}
 			
 			//==========score=============
