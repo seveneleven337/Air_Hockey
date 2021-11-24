@@ -13,10 +13,10 @@ public interface Global {
 		
 	//=====striker=======
 	public static final int STRIKER_HEIGHT = 130;
-	public static final int STRIKER_WIDTH = 20;
+	public static final int STRIKER_WIDTH = 40;
 	
 	//======disc=======
-	public static final int DISC_DIAMETER = 50;
+	public static final int DISC_DIAMETER = 10;
 	
 	//====== speed =====
 	public static final int STRIKER_SPEED = 10;

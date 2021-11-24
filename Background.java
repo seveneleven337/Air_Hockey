@@ -17,36 +17,36 @@ public class Background extends Rectangle implements Global{
 			
 			switch (id) {
 			case 1:
-				g.drawImage(HOR_BLUE, x, y-10, null);
-				//g.drawRect(x, y,width, height);
+				//g.drawImage(HOR_BLUE, x, y-10, null);
+				g.drawRect(x, y,width, height);
 				break;
 			case 2:
-				g.drawImage(HOR_GREEN, x, y-10, null);
-				//g.drawRect(x, y,width, height);
+				//g.drawImage(HOR_GREEN, x, y-10, null);
+				g.drawRect(x, y,width, height);
 				break;
 			case 3:
-				g.drawImage(HOR_RED, x, y-50, null);
-				//g.drawRect(x, y,width, height);
+				//g.drawImage(HOR_RED, x, y-50, null);
+				g.drawRect(x, y,width, height);
 				break;
 			case 4:
-				g.drawImage(HOR_YELLOW, x, y-50, null);
-				//g.drawRect(x, y,width, height);
+				//g.drawImage(HOR_YELLOW, x, y-50, null);
+				g.drawRect(x, y,width, height);
 				break;
 			case 5:
-				g.drawImage(VER_BLUE, x, y+40, null);
-				//g.drawRect(x, y,width, height);
+				//g.drawImage(VER_BLUE, x, y+40, null);
+				g.drawRect(x, y,width, height);
 				break;
 			case 6:
-				g.drawImage(VER_GREEN, x-40, y+40, null);
-				//g.drawRect(x, y,width, height);
+				//g.drawImage(VER_GREEN, x-40, y+40, null);
+				g.drawRect(x, y,width, height);
 				break;
 			case 7:
-				g.drawImage(VER_RED, x, y-40, null);
-				//g.drawRect(x, y,width, height);
+				//g.drawImage(VER_RED, x, y-40, null);
+				g.drawRect(x, y,width, height);
 				break;
 			case 8:
-				g.drawImage(VER_YELLOW, x-40, y-40, null);
-				//g.drawRect(x, y,width, height);
+				//g.drawImage(VER_YELLOW, x-40, y-40, null);
+				g.drawRect(x, y,width, height);
 				break;
 			}
 		}

@@ -48,8 +48,8 @@ public class Disc extends Rectangle implements Global{
 		}
 		
 		public void draw(Graphics g) {
-			//g.setColor(Color.white);
-			//g.fillOval(x, y, height, width);
-			g.drawImage(image, x, y, null);
+			g.setColor(Color.white);
+			g.fillOval(x, y, height, width);
+			//g.drawImage(image, x, y, null);
 		}
 }

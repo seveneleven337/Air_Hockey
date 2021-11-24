@@ -35,13 +35,10 @@ public class Playground extends JPanel implements Global, Runnable{
 		Integer avgFps = 60;
 		
 		Playground(){
-			//=======
+			//======
 			background();
-			System.out.println("1");
 			striker();
-			System.out.println("2");
 			disc();
-			System.out.println("3");
 			//score();
 			score= new Score();
 			
@@ -65,11 +62,11 @@ public class Playground extends JPanel implements Global, Runnable{
 		
 		public void background() {
 			//top
-			back.add(new Background((SCREEN_WIDTH/2)-LONG_BORDER,0,LONG_BORDER,BORDER,1));
-			back.add(new Background(SCREEN_WIDTH/2,0,LONG_BORDER,BORDER,2));
+			back.add(new Background((SCREEN_WIDTH/2+DISC_DIAMETER)-LONG_BORDER,0,LONG_BORDER,BORDER,1));
+			back.add(new Background(SCREEN_WIDTH/2-DISC_DIAMETER,0,LONG_BORDER,BORDER,2));
 			//bot
-			back.add(new Background((SCREEN_WIDTH/2)-LONG_BORDER,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,3));
-			back.add(new Background(SCREEN_WIDTH/2,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,4));
+			back.add(new Background((SCREEN_WIDTH/2+DISC_DIAMETER)-LONG_BORDER,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,3));
+			back.add(new Background(SCREEN_WIDTH/2-DISC_DIAMETER,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,4));
 			//left
 			back.add(new Background(0,0,BORDER,SHORT_BORDER,5));
 			back.add(new Background(0,SCREEN_HEIGHT-SHORT_BORDER,BORDER,SHORT_BORDER,6));
@@ -118,18 +115,18 @@ public class Playground extends JPanel implements Global, Runnable{
 		public void checkCollision() {
 			
 			//========disk top and bottom===========
-			if(disc.intersects(back.get(0))||disc.intersects(back.get(1))) {
+			if(back.get(0).contains(disc)||back.get(1).contains(disc)) {
 				disc.setYDirection(-disc.Speedy);
 			}
-			if(disc.intersects(back.get(2))||disc.intersects(back.get(3))) {
+			if(back.get(2).contains(disc)||back.get(3).contains(disc)) {
 				disc.setYDirection(-disc.Speedy);
 			}
 			
 			//========disk right and left background border==========
-			if(disc.intersects(back.get(4))||disc.intersects(back.get(5))) {
+			if(back.get(4).contains(disc)||back.get(5).contains(disc)) {
 				disc.setXDirection(-disc.Speedx);
 			}
-			if(disc.intersects(back.get(6))||disc.intersects(back.get(7))) {
+			if(back.get(6).contains(disc)||back.get(7).contains(disc)) {
 				disc.setXDirection(-disc.Speedx);
 			}
 			
@@ -138,60 +135,52 @@ public class Playground extends JPanel implements Global, Runnable{
 			//striker1 top
 			if(striker1.intersects(back.get(0))) {
 				striker1.y = BORDER;
-				striker1.inv1.y=(int)striker1.getY()-3;
-				striker1.inv2.y=(int)striker1.getY()+STRIKER_HEIGHT+2;
 			}
 			//striker1 bottom
 			if(striker1.intersects(back.get(2))) {
 				striker1.y = SCREEN_HEIGHT-BORDER-STRIKER_HEIGHT;
-				striker1.inv1.y=(int)striker1.getY()-3;
-				striker1.inv2.y=SCREEN_HEIGHT-BORDER+2;
 			}
 			//striker2 top
 			if(striker2.intersects(back.get(1))) {
 				striker2.y = BORDER;
-				striker2.inv1.y=(int)striker2.getY()-3;
-				striker2.inv2.y=(int)striker2.getY()+STRIKER_HEIGHT+2;
 			}
 			//striker2 bottom
 			if(striker2.intersects(back.get(3))) {
 				striker2.y = SCREEN_HEIGHT-BORDER-STRIKER_HEIGHT;
-				striker2.inv1.y=(int)striker2.getY()-3;
-				striker2.inv2.y=SCREEN_HEIGHT-BORDER+2;
 			}
 			
 			//==========striker and disk=========== 
-			if(disc.intersects(striker1) || disc.intersects(striker2)) {
-				disc.setXDirection(-disc.Speedx);
-				/*if(disc.Speedx<0) {
-					disc.setXDirection(Math.abs(disc.Speedx)+1);
-					disc.setYDirection(Math.abs(disc.Speedy)+1);
+			
+			if(striker1.contains(disc) || striker2.contains(disc)) {
+				if(disc.Speedx<0) {
+				disc.setXDirection(Math.abs(disc.Speedx)+1);
+					if(disc.Speedy>0)
+						disc.setYDirection(Math.abs(disc.Speedy)+1);
+					else {
+						disc.setYDirection(-1*(Math.abs(disc.Speedy)+1));
+					}
 				} else {
-					disc.setXDirection(-1*(Math.abs(disc.Speedx)+1));
-					disc.setYDirection(-1*(Math.abs(disc.Speedy)+1));
-				}*/
+				disc.setXDirection(-1*(Math.abs(disc.Speedx)+1));
+					if(disc.Speedy>0)
+						disc.setYDirection(Math.abs(disc.Speedy)+1);
+					else {
+						disc.setYDirection(-1*(Math.abs(disc.Speedy)+1));
+				}
+				}
 			}
-			if(disc.intersects(striker1.inv1) || disc.intersects(striker1.inv2) || disc.intersects(striker2.inv1) || disc.intersects(striker2.inv2)) {
-				disc.setYDirection(-(disc.Speedy));
-				/*if(disc.Speedy<0) {
-					disc.setXDirection(Math.abs(disc.Speedx)+DELTA_SPEED);
-					disc.setYDirection(Math.abs(disc.Speedy)+DELTA_SPEED);
-				} else {
-					disc.setXDirection(-1*(Math.abs(disc.Speedx)+DELTA_SPEED));
-					disc.setYDirection(-1*(Math.abs(disc.Speedy)+DELTA_SPEED));
-				}*/
-			}
+			
+			
 			
 			//==========score=============
 			//player1 score
-			if(disc.intersects(score.goalpost1)) {
+			if(score.goalpost1.contains(disc)) {
 				score.player1 ++;
 				striker();
 				disc();
 				System.out.println("player 1 score" + score.player1);
 			}
 			//player2 score
-			if(disc.intersects(score.goalpost2)) {
+			if(score.goalpost2.intersects(disc)) {
 				score.player2 ++;
 				striker();
 				disc();
