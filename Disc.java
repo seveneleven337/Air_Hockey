@@ -44,6 +44,7 @@ public class Disc extends Rectangle implements Global{
 		public void move() {
 			x +=  Speedx;
 			y +=  Speedy;
+			System.out.println(Speedx +"  "+ Speedy);
 		}
 		
 		public void draw(Graphics g) {

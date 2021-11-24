@@ -7,9 +7,9 @@ import javax.swing.ImageIcon;
 
 public interface Global {
 	//======screen=====
-	public static Integer SCREEN_WIDTH = 1200;
-	public static Integer SCREEN_HEIGHT = 800;
-	public static Dimension SCREEN = new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT);
+	public static final Integer SCREEN_WIDTH = 1200;
+	public static final Integer SCREEN_HEIGHT = 800;
+	public static final Dimension SCREEN = new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT);
 		
 	//=====striker=======
 	public static final int STRIKER_HEIGHT = 130;
@@ -21,6 +21,7 @@ public interface Global {
 	//====== speed =====
 	public static final int STRIKER_SPEED = 10;
 	public static final int DISC_SPEED = 6;
+	public static final int DELTA_SPEED = 1; 
 	
 	//====== image =========
 	public static final Image BACKGROUND = new ImageIcon("PNG\\background-wO.png").getImage();

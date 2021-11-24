@@ -8,8 +8,8 @@ import java.awt.event.KeyEvent;
 
 public class Striker extends Rectangle implements Global{
 	
-	int id;
-	int speedY;
+	private int id;
+	private int speedY;
 	Rectangle inv1;
 	Rectangle inv2;
 	
@@ -78,19 +78,19 @@ public class Striker extends Rectangle implements Global{
 		}
 		public void draw(Graphics g) {
 			if(id==1) {
-				g.setColor(Color.green);
-				//g.drawImage(STRIKER1, x, y, null);
+				g.drawImage(STRIKER1, x, y, null);
+				/*g.setColor(Color.green);
 				g.drawRect(x, y, width, height);
 				g.setColor(Color.white);
 				g.drawRect(inv1.x,inv1.y,inv1.width,inv1.height);
-				g.drawRect(inv2.x,inv2.y,inv2.width,inv2.height);
+				g.drawRect(inv2.x,inv2.y,inv2.width,inv2.height);*/
 			}else {
-				g.setColor(Color.red);
-				//g.drawImage(STRIKER2, x, y, null);	
+				g.drawImage(STRIKER2, x, y, null);
+				/*g.setColor(Color.red);
 				g.drawRect(x, y, width, height);
 				g.setColor(Color.white);
 				g.drawRect(inv1.x,inv1.y,inv1.width,inv1.height);
-				g.drawRect(inv2.x,inv2.y,inv2.width,inv2.height);
+				g.drawRect(inv2.x,inv2.y,inv2.width,inv2.height);*/
 			}
 		}
 

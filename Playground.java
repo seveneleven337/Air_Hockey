@@ -173,13 +173,25 @@ public class Playground extends JPanel implements Global, Runnable{
 			
 			//==========striker and disk=========== 
 			if(disc.intersects(striker1) || disc.intersects(striker2)) {
-				disc.setXDirection(-disc.Speedx);
-			}else
-			if(disc.intersects(striker1.inv1) || disc.intersects(striker1.inv2) || disc.intersects(striker2.inv1) || disc.intersects(striker2.inv2)) {
-				disc.setYDirection(-(disc.Speedy));
+				if(disc.Speedx<0) {
+					disc.setXDirection(Math.abs(disc.Speedx)+1);
+					disc.setYDirection(Math.abs(disc.Speedy)+1);
+				} else {
+					disc.setXDirection(-1*(Math.abs(disc.Speedx)+1));
+					disc.setYDirection(-1*(Math.abs(disc.Speedy)+1));
+				}
 			}
-			
-			
+			if(disc.intersects(striker1.inv1) || disc.intersects(striker1.inv2) || disc.intersects(striker2.inv1) || disc.intersects(striker2.inv2)) {
+				//disc.setYDirection(Math.abs(disc.Speedy++));
+				//disc.Speedy++;
+				if(disc.Speedy<0) {
+					disc.setXDirection(Math.abs(disc.Speedx)+DELTA_SPEED);
+					disc.setYDirection(Math.abs(disc.Speedy)+DELTA_SPEED);
+				} else {
+					disc.setXDirection(-1*(Math.abs(disc.Speedx)+DELTA_SPEED));
+					disc.setYDirection(-1*(Math.abs(disc.Speedy)+DELTA_SPEED));
+				}
+			}
 			
 			//==========score=============
 			//player1 score
