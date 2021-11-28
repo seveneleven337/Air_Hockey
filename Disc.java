@@ -62,5 +62,5 @@ public class Disc extends Rectangle implements Global{
 		public void setSpeedy(Integer speedy) {
 			Speedy = speedy;
 		}
-		
+		//
 }
