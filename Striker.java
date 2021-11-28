@@ -8,14 +8,14 @@ import java.awt.event.KeyEvent;
 
 public class Striker extends Rectangle implements Global{
 	
-	private int id;
-	private int speedY;
-	
-	Striker(int x,int id){
-		super(x,(SCREEN_HEIGHT/2)-(STRIKER_HEIGHT/2),STRIKER_WIDTH,STRIKER_HEIGHT);
-		this.id = id;
-	}
+		private int id;
+		private int speedY;
 		
+		Striker(int x,int id){
+			super(x,(SCREEN_HEIGHT/2)-(STRIKER_HEIGHT/2),STRIKER_WIDTH,STRIKER_HEIGHT);
+			this.id = id;
+		}
+			
 		public void keyPressed(KeyEvent e) {
 			switch(id) {
 			//player 1 keycode
@@ -72,19 +72,17 @@ public class Striker extends Rectangle implements Global{
 		}
 		public void draw(Graphics g) {
 			if(id==1) {
-				//g.drawImage(STRIKER1, x, y, null);
-				g.setColor(Color.green);
-				g.drawRect(x, y, width, height);
-				g.setColor(Color.white);
+				g.drawImage(STRIKER1, x-10, y, null);
+				//g.setColor(Color.green);
+				//g.drawRect(x, y, width, height);
 			}else {
-				//g.drawImage(STRIKER2, x, y, null);
+				g.drawImage(STRIKER2, x-10, y, null);
 				g.setColor(Color.red);
-				g.drawRect(x, y, width, height);
-				g.setColor(Color.white);
-
+				//g.drawRect(x, y, width, height);
+	
 			}
 		}
-
-		
+	
+			
 
 }

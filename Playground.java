@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -14,25 +17,26 @@ import javax.swing.JPanel;
 public class Playground extends JPanel implements Global, Runnable{
 		
 	    //Basic variables
-		Thread mainThread;
-		Graphics graphics;
+		private Thread mainThread;
+		private Graphics graphics;
 		
 		//image
-		Image image;
+		private Image image;
 		
 		//main objects  
-		Striker striker1;
-		Striker striker2;
-		Disc disc;
-		Score score;
+		private Striker striker1;
+		private Striker striker2;
+		private Disc disc;
+		private Score score;
 		//Score score2;
 		
 		//main background
-		ArrayList <Background> back = new ArrayList <Background>();
+		private ArrayList <Background> back = new ArrayList <Background>();
 
 		//other
-		Random random;
-		Integer avgFps = 60;
+		private Random random;
+		private Integer avgFps = 60;
+		private File file;
 		
 		Playground(){
 			//======
@@ -41,6 +45,10 @@ public class Playground extends JPanel implements Global, Runnable{
 			disc();
 			//score();
 			score= new Score();
+			//file
+			new FileLocal();
+			file = new File();
+			file.input();
 			
 			
 			//======
@@ -53,26 +61,20 @@ public class Playground extends JPanel implements Global, Runnable{
 			mainThread.start();
 		}
 		
-		/*public void score() {	
-		 * 
-		 * 
-		 * 
-		 * 
-		}*/
 		
 		public void background() {
 			//top
-			back.add(new Background((SCREEN_WIDTH/2+DISC_DIAMETER)-LONG_BORDER,0,LONG_BORDER,BORDER,1));
-			back.add(new Background(SCREEN_WIDTH/2-DISC_DIAMETER,0,LONG_BORDER,BORDER,2));
+			back.add(new Background((SCREEN_WIDTH/2+DISC_DIAMETER/2)-LONG_BORDER,0,LONG_BORDER,BORDER,1));
+			back.add(new Background(SCREEN_WIDTH/2-DISC_DIAMETER/2,0,LONG_BORDER,BORDER,2));
 			//bot
-			back.add(new Background((SCREEN_WIDTH/2+DISC_DIAMETER)-LONG_BORDER,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,3));
-			back.add(new Background(SCREEN_WIDTH/2-DISC_DIAMETER,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,4));
+			back.add(new Background((SCREEN_WIDTH/2+DISC_DIAMETER/2)-LONG_BORDER,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,3));
+			back.add(new Background(SCREEN_WIDTH/2-DISC_DIAMETER/2,SCREEN_HEIGHT-BORDER,LONG_BORDER,BORDER,4));
 			//left
-			back.add(new Background(0,0,BORDER,SHORT_BORDER,5));
-			back.add(new Background(0,SCREEN_HEIGHT-SHORT_BORDER,BORDER,SHORT_BORDER,6));
+			back.add(new Background(0,0,BORDER,SHORT_BORDER+40,5));
+			back.add(new Background(0,SCREEN_HEIGHT-SHORT_BORDER-40,BORDER,SHORT_BORDER+40,6));
 			//right
-			back.add(new Background(SCREEN_WIDTH-BORDER,0,BORDER,SHORT_BORDER,7));
-			back.add(new Background(SCREEN_WIDTH-BORDER,SCREEN_HEIGHT-SHORT_BORDER,BORDER,SHORT_BORDER,8));
+			back.add(new Background(SCREEN_WIDTH-BORDER,0,BORDER,SHORT_BORDER+40,7));
+			back.add(new Background(SCREEN_WIDTH-BORDER,SCREEN_HEIGHT-SHORT_BORDER-40,BORDER,SHORT_BORDER+40,8));
 		
 		}
 		public void striker() {
@@ -116,18 +118,18 @@ public class Playground extends JPanel implements Global, Runnable{
 			
 			//========disk top and bottom===========
 			if(back.get(0).contains(disc)||back.get(1).contains(disc)) {
-				disc.setYDirection(-disc.Speedy);
+				disc.setYDirection(-disc.getSpeedy());
 			}
 			if(back.get(2).contains(disc)||back.get(3).contains(disc)) {
-				disc.setYDirection(-disc.Speedy);
+				disc.setYDirection(-disc.getSpeedy());
 			}
 			
 			//========disk right and left background border==========
 			if(back.get(4).contains(disc)||back.get(5).contains(disc)) {
-				disc.setXDirection(-disc.Speedx);
+				disc.setXDirection(-disc.getSpeedx());
 			}
 			if(back.get(6).contains(disc)||back.get(7).contains(disc)) {
-				disc.setXDirection(-disc.Speedx);
+				disc.setXDirection(-disc.getSpeedx());
 			}
 			
 			
@@ -152,19 +154,19 @@ public class Playground extends JPanel implements Global, Runnable{
 			//==========striker and disk=========== 
 			
 			if(striker1.contains(disc) || striker2.contains(disc)) {
-				if(disc.Speedx<0) {
-				disc.setXDirection(Math.abs(disc.Speedx)+1);
-					if(disc.Speedy>0)
-						disc.setYDirection(Math.abs(disc.Speedy)+1);
+				if(disc.getSpeedx()<0) {
+				disc.setXDirection(Math.abs(disc.getSpeedx())+1);
+					if(disc.getSpeedy()>0)
+						disc.setYDirection(Math.abs(disc.getSpeedy())+1);
 					else {
-						disc.setYDirection(-1*(Math.abs(disc.Speedy)+1));
+						disc.setYDirection(-1*(Math.abs(disc.getSpeedy())+1));
 					}
 				} else {
-				disc.setXDirection(-1*(Math.abs(disc.Speedx)+1));
-					if(disc.Speedy>0)
-						disc.setYDirection(Math.abs(disc.Speedy)+1);
+				disc.setXDirection(-1*(Math.abs(disc.getSpeedx())+1));
+					if(disc.getSpeedy()>0)
+						disc.setYDirection(Math.abs(disc.getSpeedy())+1);
 					else {
-						disc.setYDirection(-1*(Math.abs(disc.Speedy)+1));
+						disc.setYDirection(-1*(Math.abs(disc.getSpeedy())+1));
 				}
 				}
 			}
@@ -173,18 +175,20 @@ public class Playground extends JPanel implements Global, Runnable{
 			
 			//==========score=============
 			//player1 score
-			if(score.goalpost1.contains(disc)) {
-				score.player1 ++;
+			if(score.getGoalpost1().contains(disc)) {
+				score.setPlayer1();;
 				striker();
 				disc();
-				System.out.println("player 1 score" + score.player1);
+				System.out.println("player 1 score" + score.getPlayer1());
+				file.output(score);;
 			}
 			//player2 score
-			if(score.goalpost2.intersects(disc)) {
-				score.player2 ++;
+			if(score.getGoalpost2().contains(disc)) {
+				score.setPlayer2();
 				striker();
 				disc();
-				System.out.println("player 2 score" + score.player2);
+				System.out.println("player 2 score" + score.getPlayer2());
+				file.output(score);
 			}
 		}
 		
@@ -192,9 +196,7 @@ public class Playground extends JPanel implements Global, Runnable{
 		
 		public void run() {
 			
-			//frames config
-			final double fps = 60.0;								
-			double targetTime = 1000000000/fps; 					
+			//frames config												
 			double delta = 0;										
 			int frames = 0;
 			
@@ -207,7 +209,6 @@ public class Playground extends JPanel implements Global, Runnable{
 				delta += (now - lastTime)/targetTime;
 				time += (now - lastTime);
 				lastTime = now;
-				
 				if(delta>=1) {
 					move();
 					checkCollision();
@@ -219,15 +220,14 @@ public class Playground extends JPanel implements Global, Runnable{
 				// conditional for print true fps
 				if(time>=1000000000) {                                      
 					avgFps = frames;
-					//System.out.println("Average FPS: " + avgFps);
 					frames = 0;
 					time = 0;
 				}
 			}
 		}
-		
-		
-		
+
+
+
 		//=========inner class who listen the keyboard signals==========
 		public class Keyboard extends KeyAdapter{
 			public void keyPressed(KeyEvent e) {
@@ -239,7 +239,10 @@ public class Playground extends JPanel implements Global, Runnable{
 				striker2.keyReleased(e);
 			}
 		}
+		
 }
+
+
 
 
 
