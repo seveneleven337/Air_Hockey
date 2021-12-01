@@ -3,7 +3,11 @@ package game2;
 import java.awt.Color;
 
 import javax.swing.JFrame;
-
+/**
+ * class who contain the game frame
+ * @author Gonzalo
+ *
+ */
 
 public class Window extends JFrame implements Global{
 		

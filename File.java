@@ -6,7 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
+/**
+ * class to save status of the game when we are using serialization
+ * @author Gonzalo
+ */
 
 public class File{
 	private Score loaded;
@@ -17,6 +20,9 @@ public class File{
 	private FileInputStream fileIn;
 	private ObjectInputStream objectIn;
 	
+	/**
+	 * method who read and display previous score status
+	 */
 	public void input() {
 		try {
 			fileIn = new FileInputStream("file.txt");
@@ -37,7 +43,10 @@ public class File{
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * method who create a new output file, and write inside the score of the game
+	 * @param score
+	 */
 	public void output(Score score) {
 		try {
 			fileOut = new FileOutputStream("file.txt");

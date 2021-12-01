@@ -4,18 +4,25 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-
+/**
+ * this class contain state and behavior of striker
+ * @author Gonzalo
+ *
+ */
 
 public class Striker extends Rectangle implements Global{
 	
 		private int id;
 		private int speedY;
-		
+		//constructor
 		Striker(int x,int id){
 			super(x,(SCREEN_HEIGHT/2)-(STRIKER_HEIGHT/2),STRIKER_WIDTH,STRIKER_HEIGHT);
 			this.id = id;
 		}
-			
+		/**
+		 * method who handle the key pressed and move the striker position;	
+		 * @param e
+		 */
 		public void keyPressed(KeyEvent e) {
 			switch(id) {
 			//player 1 keycode
@@ -41,6 +48,10 @@ public class Striker extends Rectangle implements Global{
 				} break;
 		}
 		}
+		/**
+		 * method who handle the key released and move the striker position;	
+		 * @param e
+		 */
 		public void keyReleased(KeyEvent e) {
 			switch(id) {
 			case 1:
@@ -63,13 +74,23 @@ public class Striker extends Rectangle implements Global{
 				}break;
 			}	
 		}
-		
+		/**
+		 * method set striker Y direction 
+		 * @param yDirection
+		 */
 		public void setYDirection(int yDirection) {
 			speedY = yDirection;
 		}
+		/**
+		 * method set striker Y position
+		 */
 		public void move() {
 			y = y + speedY;
 		}
+		/**
+		 * method who draw striker
+		 * @param g
+		 */
 		public void draw(Graphics g) {
 			if(id==1) {
 				g.drawImage(STRIKER1, x-10, y, null);

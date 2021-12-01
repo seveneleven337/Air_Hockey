@@ -5,10 +5,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
-
+/**
+ * this class contain local final creation and write
+ * @author Gonzalo
+ *
+ */
 public class FileLocal implements Global {
 
-	public FileLocal(){
+		FileLocal(){
 		//====== create a file =======
 		
 		String path = "test";

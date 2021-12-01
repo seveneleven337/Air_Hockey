@@ -4,7 +4,11 @@ import java.awt.Dimension;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
-
+/**
+ * interface who hold global variables
+ * @author Gonzalo
+ *
+ */
 public interface Global {
 	//======screen=====
 	public final Integer SCREEN_WIDTH = 1200;

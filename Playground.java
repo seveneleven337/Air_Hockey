@@ -11,12 +11,16 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JPanel;
-
+/**
+ * this class contain the class who hold all the objects in the jPanel, override runnable and generate the threads for the game
+ *  * @author Gonzalo
+ *
+ */
 
 
 public class Playground extends JPanel implements Global, Runnable{
 		
-	    //Basic variables
+	    //Basic variables 
 		private Thread mainThread;
 		private Graphics graphics;
 		
@@ -38,6 +42,8 @@ public class Playground extends JPanel implements Global, Runnable{
 		private Integer avgFps = 60;
 		private File file;
 		
+		
+		//constructor
 		Playground(){
 			//======
 			background();
@@ -61,7 +67,9 @@ public class Playground extends JPanel implements Global, Runnable{
 			mainThread.start();
 		}
 		
-		
+		/**
+		 * method who instantiate different parts of the back(background) object
+		 */
 		public void background() {
 			//top
 			back.add(new Background((SCREEN_WIDTH/2+DISC_DIAMETER/2)-LONG_BORDER,0,LONG_BORDER,BORDER,1));
@@ -77,22 +85,33 @@ public class Playground extends JPanel implements Global, Runnable{
 			back.add(new Background(SCREEN_WIDTH-BORDER,SCREEN_HEIGHT-SHORT_BORDER-40,BORDER,SHORT_BORDER+40,8));
 		
 		}
+		/**
+		 * method who instantiate 2 striker 
+		 */
 		public void striker() {
 			striker1 = new Striker(3*BORDER,1);
 			striker2 = new Striker(SCREEN_WIDTH-3*BORDER-STRIKER_WIDTH,2);
 		}
-		
+		/**
+		 * method who instantiate 2 disc 
+		 */
 		public void disc() {
 			disc = new Disc();
 		}
-		
+		/**
+		 * method to draw
+		 * @param g
+		 */
 		public void paint(Graphics g) {
 			image = createImage(getWidth(),getHeight());
 			graphics = image.getGraphics();
 			draw(graphics);
 			g.drawImage(image,0,0,this);
 		}
-		
+		/**
+		 * method who hold different object who will be draw
+		 * @param g
+		 */
 		public void draw(Graphics g) {
 			drawBorder(g);
 			striker1.draw(g);
@@ -100,20 +119,27 @@ public class Playground extends JPanel implements Global, Runnable{
 			disc.draw(g);
 			score.draw(g);
 		}
-		
+		/**
+		 * method who hold background who will be draw
+		 * @param g
+		 */
 		public void drawBorder(Graphics g) {
 			g.drawImage(BACKGROUND, 0, 0, null);
 			for(Background e: back) {
 				e.draw(g);
 			}
 		}
-		
+		/**
+		 * method who contain movements of the objects
+		 */
 		public void move() {
 			striker1.move();
 			striker2.move();
 			disc.move();	
 		}
-		
+		/**
+		 * method who handle the objects collision
+		 */
 		public void checkCollision() {
 			
 			//========disk top and bottom===========
@@ -192,11 +218,12 @@ public class Playground extends JPanel implements Global, Runnable{
 			}
 		}
 		
-		
-		
+		/**
+		 * loop of the game
+		 */
 		public void run() {
 			
-			//frames config												
+			//frames configuration											
 			double delta = 0;										
 			int frames = 0;
 			
@@ -226,7 +253,10 @@ public class Playground extends JPanel implements Global, Runnable{
 			}
 		}
 
-
+		/**
+		 * inner class who listen the keyboard signals
+		 * @author Gonzalo
+		 */
 
 		//=========inner class who listen the keyboard signals==========
 		public class Keyboard extends KeyAdapter{
